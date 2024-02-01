@@ -178,6 +178,7 @@ class NewsApiClient(object):
         self,
         q=None,
         qintitle=None,
+        search_in=None,
         sources=None,
         domains=None,
         exclude_domains=None,
@@ -198,7 +199,11 @@ class NewsApiClient(object):
 
         :param qintitle: Keywords or a phrase to search for in the article title and body.  See the official News API
             `documentation <https://newsapi.org/docs/endpoints/everything>`_ for search syntax and examples.
-        :type q: str or None
+        :type qintitle: str or None
+
+        :param search_in: Keywords or a phrase to search for in the article title and body.  See the official News API
+            `documentation <https://newsapi.org/docs/endpoints/everything>`_ for search syntax and examples.
+        :type search_in: str or None
 
         :param sources: A comma-seperated string of identifiers for the news sources or blogs you want headlines from.
             Use :meth:`NewsApiClient.get_sources` to locate these programmatically, or look at the
@@ -261,6 +266,12 @@ class NewsApiClient(object):
                 payload["qintitle"] = qintitle
             else:
                 raise TypeError("keyword/phrase qintitle param should be of type str")
+
+        if search_in is not None:
+            if is_valid_string(search_in):
+                payload["searchIn"] = search_in
+            else:
+                raise TypeError("keyword/phrase search_in param should be of type str")
 
         # Sources
         if sources is not None:
